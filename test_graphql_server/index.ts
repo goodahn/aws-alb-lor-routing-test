@@ -15,7 +15,7 @@ const pubsub = new PubSub();
 
 // A number that we'll increment over time to simulate subscription events
 let currentNumber = 0;
-
+let queryCount = 0;
 // Schema definition
 const typeDefs = `#graphql
   type Query {
@@ -27,8 +27,16 @@ const typeDefs = `#graphql
   }
 `;
 
+let delay = Number(process.env.DELAY);
+
 function getCrrentNumberAfterRandomDelay() {
-  return currentNumber;
+  queryCount += 1;
+  console.log("query requested", queryCount);
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve(currentNumber);
+      }, delay * 1000);
+    });
  }
  
 
