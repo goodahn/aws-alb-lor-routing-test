@@ -28,11 +28,7 @@ const typeDefs = `#graphql
 `;
 
 function getCrrentNumberAfterRandomDelay() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(currentNumber);
-      }, Math.random() * 1000);
-    });
+  return currentNumber;
  }
  
 
