@@ -23,18 +23,18 @@ const typeDefs = `#graphql
     numberIncremented: Int
   }
 `;
-function getCrrentNumberAfterDelay() {
+function getCrrentNumberAfterRandomDelay() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(currentNumber);
-        }, 1000);
+        }, Math.random() * 1000);
     });
 }
 // Resolver map
 const resolvers = {
     Query: {
         currentNumber() {
-            return getCrrentNumberAfterDelay();
+            return getCrrentNumberAfterRandomDelay();
         },
     },
     Subscription: {
