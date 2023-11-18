@@ -89,6 +89,22 @@ const server = new ApolloServer({
 await server.start();
 app.use('/graphql', cors<cors.CorsRequest>(), bodyParser.json(), expressMiddleware(server));
 
+const router = express.Router({});
+router.get('/', async (_req, res, _next) => {
+	// optional: add further things to check (e.g. connecting to dababase)
+	const healthcheck = {
+		uptime: process.uptime(),
+		message: 'OK',
+		timestamp: Date.now()
+	};
+	try {
+		res.send(healthcheck);
+	} catch (e) {
+		res.status(503).send();
+	}
+});
+app.use('/health', router);
+
 // Now that our HTTP server is fully set up, actually listen.
 httpServer.listen(PORT, () => {
   console.log(`🚀 Query endpoint ready at http://localhost:${PORT}/graphql`);
