@@ -21,6 +21,7 @@ const pubsub = new PubSub({eventEmitter: biggerEventEmitter});
 let currentNumber = 0;
 let queryCount = 0;
 let subscriptionCount = 0;
+let healthcheckCount = 0;
 // Schema definition
 const typeDefs = `#graphql
   type Query {
@@ -36,7 +37,7 @@ let delay = Number(process.env.DELAY);
 
 function getCrrentNumberAfterRandomDelay() {
   queryCount += 1;
-  console.log("query requested", queryCount);
+  console.log("query requested", Date.now(), queryCount);
   return new Promise((resolve, reject) => {
     setTimeout(() => {
         resolve(currentNumber);
@@ -56,7 +57,7 @@ const resolvers = {
     numberIncremented: {
       subscribe: () => {
         subscriptionCount += 1;
-        console.log("subscription requested", subscriptionCount);
+        console.log("subscription requested", Date.now(), subscriptionCount);
         return pubsub.asyncIterator(['NUMBER_INCREMENTED']);
       },
     },
@@ -110,6 +111,8 @@ router.get('/', async (_req, res, _next) => {
 		message: 'OK',
 		timestamp: Date.now()
 	};
+  healthcheckCount += 1;
+  console.log("health check count", Date.now(), healthcheckCount);
 	try {
 		res.send(healthcheck);
 	} catch (e) {
