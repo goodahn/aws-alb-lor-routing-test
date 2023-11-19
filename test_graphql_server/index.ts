@@ -16,6 +16,7 @@ const pubsub = new PubSub();
 // A number that we'll increment over time to simulate subscription events
 let currentNumber = 0;
 let queryCount = 0;
+let subscriptionCount = 0;
 // Schema definition
 const typeDefs = `#graphql
   type Query {
@@ -49,7 +50,11 @@ const resolvers = {
   },
   Subscription: {
     numberIncremented: {
-      subscribe: () => pubsub.asyncIterator(['NUMBER_INCREMENTED']),
+      subscribe: () => {
+        subscriptionCount += 1;
+        pubsub.asyncIterator(['NUMBER_INCREMENTED']);
+        console.log(subscriptionCount);
+      },
     },
   },
 };
