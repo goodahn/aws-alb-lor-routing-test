@@ -7,11 +7,15 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { PubSub } from 'graphql-subscriptions';
+import { EventEmitter } from 'events';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
 const PORT = 4000;
-const pubsub = new PubSub();
+
+const biggerEventEmitter = new EventEmitter();
+biggerEventEmitter.setMaxListeners(400);
+const pubsub = new PubSub({eventEmitter: biggerEventEmitter});
 
 // A number that we'll increment over time to simulate subscription events
 let currentNumber = 0;
@@ -52,7 +56,7 @@ const resolvers = {
     numberIncremented: {
       subscribe: () => {
         subscriptionCount += 1;
-        console.log(subscriptionCount);
+        console.log("subscription requested", subscriptionCount);
         return pubsub.asyncIterator(['NUMBER_INCREMENTED']);
       },
     },
