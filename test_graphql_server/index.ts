@@ -52,8 +52,8 @@ const resolvers = {
     numberIncremented: {
       subscribe: () => {
         subscriptionCount += 1;
-        pubsub.asyncIterator(['NUMBER_INCREMENTED']);
         console.log(subscriptionCount);
+        return pubsub.asyncIterator(['NUMBER_INCREMENTED']);
       },
     },
   },
