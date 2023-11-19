@@ -3,7 +3,7 @@ from gql.transport.websockets import WebsocketsTransport
 import time
 import threading
 
-LOAD_BALANCER_URI = "ws://aws-alb-lor-routing-test-1712008878.ap-northeast-2.elb.amazonaws.com/graphql"
+LOAD_BALANCER_URI = ""
 
 query = gql(
     """subscription {
